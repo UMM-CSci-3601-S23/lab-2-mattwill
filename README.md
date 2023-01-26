@@ -154,6 +154,13 @@ This will run all tests and output info about the run to a test report "website"
 ```text
 server/build/reports/tests/test/index.html
 ```
+Write up your answers to these questions in a Google Doc and turn that in via
+Canvas on the assignment for this lab.
+
+:bangbang:
+
+* [ ] __Make sure that everyone in your group has edit privileges on the document.__
+* [ ] __Make sure that the
 
 It will look something like this:
 

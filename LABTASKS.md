@@ -286,7 +286,8 @@ Patterns which a user wants Git to ignore in all situations (e.g., backup or tem
 
 The underlying Git plumbing tools, such as git ls-files and git read-tree, read gitignore patterns specified by command-line options, or from files specified by command-line options. Higher-level Git tools, such as git status and git add, use patterns from the sources specified above.
 
-PATTERN FORMAT
+PATTERN FORMAT    assertEquals(db.size(), argument.getValue());
+
 A blank line matches no files, so it can serve as a separator for readability.
 
 A line starting with # serves as a comment. Put a backslash ("\") in front of the first hash for patterns that begin with a hash.
@@ -402,7 +403,7 @@ api/todos?owner=Blanche&status=complete&limit=12&orderBy=category
 ```
 
 which would return the first 12 completed to-dos owned by
-Blanche ordered by category. Make sure you do the limiting step last so you don't miss any items.
+Blanche ordered by category. Make sure youhttp://localhost:4567/api/users do the limiting step last so you don't miss any items.
 
 Each of these if implemented properly should work in the provided client.
 
@@ -460,14 +461,20 @@ takes us to the user with that specific id.
 actually work and generate results from your server.
 
 :question: *6* What are the contents of the `client` folder? What is the purpose of each of the HTML files there?
-
+The client folder holds the front end code (css, javascript, html). 
+The index.html file builds the home page, the users.html file builds the users page and the todos.html file builds the todos page.
 :question: *7* Describe what happens when you filter users by
 age in the client?
-
+Returns a list of the users at the age we specified. 
 * What information is read from the web page, and where is it read from?
+  the text on the home page is read from the index html file, text on the users is from the users html, and todos is from the todos html file.  
 * What request is sent to the server?
+  the endpoint followed by the "&" symbol followed by "age" or "company" followed by "=" followed by the actual age or company we specified. For example /api/users?&age=25
 * What reply does the server send back to the client? How is that constructed?
+  the server server sends back one of 3 respenses. if the request is of valid type (integer for age) and its within the data base it sends back the profiles that match. if there are no matching profils it sends back an empty list. if the the server recives a request of invalid type for age it returns badrequest message. this is constructed in the UserDatabase.java file. 
 * What is received by the client, and how/where is it displayed?
+  A list of profiles is recieved by the client. These contain id, name, age, company and email and are displayed in a gray box under the requested URL message on the users page.
 
 :question: *8* Where is the client-side JavaScript defined? Name the HTML file(s) that
 load and use it.
+It is defined in the three JavaScript files and is loaded and used in the part between the script tags on the corresponding html files. 
