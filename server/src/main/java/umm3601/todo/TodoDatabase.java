@@ -74,10 +74,10 @@ public class TodoDatabase {
       String targetContains = queryParams.get("contains").get(0);
       filteredTodos = filterTodosByContains(filteredTodos, targetContains);
     }
-    //if (queryParams.containsKey("orderBy")) {
-    //  String orderByParam = queryParams.get("orderBy").get(0);
-    //  filteredTodos = filterTodosByOrderBy(filteredTodos, orderByParam);
-    //}
+    if (queryParams.containsKey("orderBy")) {
+      String orderByParam = queryParams.get("orderBy").get(0);
+      filteredTodos = filterTodosByOrderBy(filteredTodos, orderByParam);
+    }
     if (queryParams.containsKey("limit")) {
       String limitParam = queryParams.get("limit").get(0);
       try {
@@ -119,9 +119,21 @@ public class TodoDatabase {
     return Arrays.stream(todos).filter(x -> x.body.contains(targetContains)).toArray(Todo[]::new);
   }
 
-  //public Todo[] filterTodosByOrderBy(Todo[] todos, String targetOrderBy) {
-  //  return Arrays.stream(todos).orderBy(targetOrderBy).toArray(Todo[]::new);
-  //}
+  public Todo[] filterTodosByOrderBy(Todo[] todos, String targetOrderBy) {
+    if (targetOrderBy.equals("owner")) {
+      return Arrays.stream(todos).sorted((t1, t2) -> t1.owner.compareTo(t2.owner)).toArray(Todo[]::new);
+    }
+    if (targetOrderBy.equals("body")) {
+      return Arrays.stream(todos).sorted((t1, t2) -> t1.body.compareTo(t2.body)).toArray(Todo[]::new);
+    }
+    if (targetOrderBy.equals("status")) {
+      return Arrays.stream(todos).sorted((t1, t2) -> t1.status.compareTo(t2.status)).toArray(Todo[]::new);
+    }
+    if (targetOrderBy.equals("category")) {
+      return Arrays.stream(todos).sorted((t1, t2) -> t1.category.compareTo(t2.category)).toArray(Todo[]::new);
+    }
+    return new Todo[0];
+  }
   public Todo[] filterTodosByLimit(Todo[] todos, int targetLimit) {
     return Arrays.stream(todos).limit(targetLimit).toArray(Todo[]::new);
   }
