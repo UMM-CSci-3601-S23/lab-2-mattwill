@@ -1,6 +1,7 @@
 package umm3601.todo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -104,6 +105,24 @@ public class TodoControllerSpec {
   }
 
   @Test
+  public void canGetUsersWithBodiesContainingGivenString() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put("body", Arrays.asList(new String[] {"magna eu"}));
+    when(ctx.queryParamMap()).thenReturn(queryParams);
+
+    userController.getTodos(ctx);
+
+    // Confirm that all the todos passed to `json` work for magna eu.
+    ArgumentCaptor<Todo[]> argument = ArgumentCaptor.forClass(Todo[].class);
+    verify(ctx).json(argument.capture());
+    // for (Todo todo : argument.getValue()) {
+    //   assertTrue(todo.body.contains("magna eu"));
+    // }
+    assertEquals(3, argument.getValue().length);
+  }
+
+
+  @Test
   public void canGetUsersWithGivenOwnerAndCategory() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
     queryParams.put("owner", Arrays.asList(new String[] {"Blanche"}));
@@ -143,4 +162,25 @@ public class TodoControllerSpec {
     });
     assertEquals("No todo with id " + null + " was found.", exception.getMessage());
   }
+
+  @Test
+  public void canGetUsersWithStatusComplete() throws IOException {
+    // Add a query param map to the context that maps "category"
+    // to "homework".
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put("status", Arrays.asList(new String[] {"Complete"}));
+    when(ctx.queryParamMap()).thenReturn(queryParams);
+
+    userController.getTodos(ctx);
+
+    // Confirm that all the todos passed to `json` have category homework.
+    ArgumentCaptor<Todo[]> argument = ArgumentCaptor.forClass(Todo[].class);
+    verify(ctx).json(argument.capture());
+    for (Todo todo : argument.getValue()) {
+      assertEquals("Complete", todo.status);
+    }
+    // Confirm that there are 79 users with category homework
+    //assertEquals(79, argument.getValue().length);
+  }
+
 }
